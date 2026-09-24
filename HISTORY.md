@@ -13,6 +13,10 @@ Our backwards-compatibility policy can be found [here](https://github.com/python
 
 ## NEXT (UNRELEASED)
 
+- Fix {meth}`structure_attrs_fromtuple <cattrs.BaseConverter.structure_attrs_fromtuple>` and {meth}`structure_attrs_fromdict <cattrs.BaseConverter.structure_attrs_fromdict>` failing with `StructureHandlerNotFoundError` on classes using `from __future__ import annotations`; the attribute types are now resolved like the rest of the structuring machinery already does.
+  ([#293](https://github.com/python-attrs/cattrs/issues/293))
+- Fix {func}`make_dict_unstructure_fn <cattrs.gen.make_dict_unstructure_fn>` ignoring hooks registered on the converter (like the methods picked up by the {func}`use_class_methods <cattrs.strategies.use_class_methods>` strategy) when no customizations are requested; hook factories built on top of it now compose with those hooks instead of silently dropping them.
+  ([#566](https://github.com/python-attrs/cattrs/issues/566))
 - Fix heterogeneous tuples and `NamedTuple`s with a member type containing a quote in its `repr`, like `tuple[Literal["a"], int]`, crashing structuring code generation with `SyntaxError`; the index note is now embedded with `repr`.
   ([#777](https://github.com/python-attrs/cattrs/pull/777))
 - Fix {func}`transform_error <cattrs.transform_error>` listing the extra keys of a `ForbiddenExtraKeysError` in set iteration order, which made the message differ between runs; the keys are now sorted, like the error's own `__str__` already sorts them.
